@@ -1,8 +1,11 @@
 
 <?php
-require_once 'db_connection.php'
-
-
+require_once 'db_connection.php';
+// var_dump($_GET);
+$title = $_GET['title'];
+$year = $_GET['year'];
+$stmt = $pdo->prepare('SELECT * FROM books WHERE title LIKE :title AND release_date LIKE :year');
+$stmt->execute(['title' => '%' . $title . '%', 'year' => '%' . $year . '%']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,63 +13,27 @@ require_once 'db_connection.php'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
 </head>
-    <style>
-        h1 { color: #000000; }
-    </style>
-<body>
+<body style="background-color: #D5F5E3;">
+<h1 style="color: #326060">Otsing</h1>
 
-    <h1> Otsing </h1>
-    
-    </form>
-    
-    
     <form action="index.php" method="GET">
-        <input id="otsi" name="title" type="text" placeholder="raamatu pealkiri" value="<?=$title;?>">
-        <input id="otsi" name="year" type="text" placeholder="raamatu aasta" value="<?=$year;?>">
-        <input id="submit" type="submit" style="font-face: 'Comic Sans MS'; font-size: larger; color: #000000 ; background-color: #F36F0D; border: 3pt ridge lightgrey"  value="Otsi" class="button"/>
+        <input id="otsi" name="title" type="text" placeholder="Raamatu pealkiri" value="<?=$title;?>" style="background-color: #FDFEFE">
+        <br>
+        <br>
+        <input id="otsi" name="year" type="text" placeholder="Raamatu aasta" value="<?=$year;?>" style="background-color: #FDFEFE">
+        <br>
+        <br>
+        <input id="submit" type="submit" value="Otsi">
     </form>
+
     <ul>
 <?php
-    $stmt = $pdo->prepare('SELECT * FROM books WHERE release_date LIKE :year AND title LIKE :title');
-    $stmt->execute(['year' => '%' . $year . '%', 'title' => '%' . $title . '%']);
-
-  echo '<ul>';
-  while ( $row = $stmt->fetch() ) {
-    echo '<li><a href="book.php?id=' . $row['id'] . '">' . $row['title'] . '</a></li>';
+while ($row = $stmt->fetch())
+{
+ echo '<li><a href="./book.php?id=' . $row['id'] . '">' . $row['title'] . "</a></li>";
 }
-echo '</ul>';
 ?>
     </ul>
-
 </body>
 </html>
-
-
-</ul>';
-?>
-    </ul>
-
-</body>
-</html>
-
-sta" value="<?=$year;?>">
-        <input id="submit" type="submit" style="font-face: 'Comic Sans MS'; font-size: larger; color: #ffffff ; background-color: #ff00ae; border: 3pt ridge lightgrey"  value="Otsi" class="button"/>
-    </form>
-    <ul>
-<?php
-  $stmt = $pdo->prepare('SELECT * FROM books WHERE release_date LIKE :year AND title LIKE :title');
-  $stmt->execute(['year' => '%' . $year . '%', 'title' => '%' . $title . '%']);
-
-  echo '<ul>';
-  while ( $row = $stmt->fetch() ) {
-    echo '<li><a href=".book.php?id=' . $row['id'] . '">' . $row['title'] . '</a></li>';
-}
-echo '</ul>';
-?>
-    </ul>
-
-</body>
-</html>
-
